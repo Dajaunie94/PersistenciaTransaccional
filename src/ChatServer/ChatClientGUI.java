@@ -2,11 +2,12 @@ package ChatServer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.ActionEvent; // Esta línea puede ser eliminada si no se usa directamente
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.*;
 import java.util.HashSet;
+
 
 public class ChatClientGUI extends JFrame {
     private JTextField messageField, serverIPField, portField, usernameField;
@@ -75,7 +76,7 @@ public class ChatClientGUI extends JFrame {
         // Acción al presionar Enter en el campo de mensaje
         messageField.addActionListener(e -> sendMessage());
 
-        // Configuración de selección de usuario en la lista
+     // Listener para la selección de usuarios en la lista
         userList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) { // Asegura que la selección es definitiva
                 chatPartner = userList.getSelectedValue(); // Asigna el usuario seleccionado
@@ -106,6 +107,7 @@ public class ChatClientGUI extends JFrame {
         }
     }
 
+ // Método para enviar un mensaje
     private void sendMessage() {
         String message = messageField.getText().trim();
         if (!message.isEmpty() && chatPartner != null) { // Verifica que haya un usuario seleccionado
@@ -114,14 +116,15 @@ public class ChatClientGUI extends JFrame {
                 chatArea.append("Has abandonado el chat con " + chatPartner + "\n");
                 messageField.setEditable(false);
             } else {
-                out.println("MSG " + chatPartner + ": " + message); // Enviar mensaje específico a usuario
+                out.println("MSG " + chatPartner + ": " + message); // Enviar mensaje específico al usuario seleccionado
+                chatArea.append("Tú: " + message + "\n"); // Mostrar el mensaje en el área de chat derecha
             }
             messageField.setText("");
         } else if (chatPartner == null) {
             JOptionPane.showMessageDialog(this, "Por favor, selecciona un usuario para chatear.");
         }
     }
-
+ // Método para actualizar la lista de usuarios conectados
     private void updateUsersList(HashSet<String> users) {
         userListModel.clear();
         for (String user : users) {
